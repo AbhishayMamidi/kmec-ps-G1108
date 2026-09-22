@@ -1,0 +1,1225 @@
+/* ═══════════════════════════════════════════════════════════════
+   NeuroSentinel — Clinical Dashboard Theme (v2)
+   Scoped to .clinical-dashboard so other pages remain untouched.
+   Refined for depth, layering, and subtle sophistication.
+   ═══════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ── Clinical Design Tokens ── */
+.clinical-dashboard {
+  /* Base backgrounds — softer, lower glare */
+  --bg-primary:   #F8FAFC;
+  --bg-secondary: #F1F5F9;
+  --bg-tertiary:  #E2E8F0;
+  --bg-card:      rgba(255, 255, 255, 0.7);
+  --bg-sidebar:   rgba(255, 255, 255, 0.85);
+  --bg-header:    rgba(251, 252, 253, 0.80);
+  --bg-hover:     #F1F5F9;
+  --bg-muted:     #F8FAFC;
+  --bg-inset:     #F1F5F9;
+
+  /* Primary accent — calming medical teal/green */
+  --accent-primary:   #10B981;
+  --accent-primary-hover: #059669;
+  --accent-secondary: #047857;
+  --accent-danger:    #DC2626;
+  --accent-success:   #16A34A;
+  --accent-warning:   #D97706;
+  --accent-info:      #2563EB;
+
+  /* Lighter accent tints for backgrounds */
+  --accent-primary-light:   rgba(16, 185, 129, 0.08);
+  --accent-primary-medium:  rgba(16, 185, 129, 0.15);
+  --accent-danger-light:    rgba(220, 38, 38, 0.05);
+  --accent-success-light:   rgba(22, 163, 74, 0.05);
+  --accent-warning-light:   rgba(217, 119, 6, 0.05);
+
+  /* Text — strong hierarchy & contrast against glare */
+  --text-primary:   #0F172A;
+  --text-secondary: #334155;
+  --text-muted:     #64748B;
+  --text-heading:   #0F172A;
+  --text-faint:     #94A3B8;
+
+  /* Borders — layered system */
+  --border-subtle:  #F0F1F5;
+  --border-default: #E4E7ED;
+  --border-strong:  #CBD2DC;
+
+  /* Shadows — progressive depth system */
+  --shadow-xs:     0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-sm:     0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-md:     0 8px 24px rgba(0, 0, 0, 0.06);
+  --shadow-lg:     0 12px 32px rgba(0, 0, 0, 0.08);
+  --shadow-card:   0 10px 30px rgba(0, 0, 0, 0.08);
+  --shadow-card-hover: 0 16px 40px rgba(0, 0, 0, 0.1);
+
+  /* Nullify all glow effects from the old theme */
+  --glow-primary: none;
+  --glow-danger:  none;
+  --glow-sm:      none;
+
+  /* Radii — consistent system */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  /* Typography */
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Subtly darkened vignette page gradient ── */
+.clinical-dashboard {
+  background: linear-gradient(135deg, var(--bg-primary), var(--bg-tertiary));
+}
+
+.clinical-dashboard::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
+  opacity: 0.8;
+  box-shadow: inset 0 0 120px rgba(0,0,0,0.02); /* vignette */
+}
+
+/* ══════════════════════════════════════
+   SIDEBAR
+   ══════════════════════════════════════ */
+
+.clinical-sidebar {
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-default);
+  position: relative;
+  z-index: 10;
+}
+
+/* Logo area removed - now handled via inline components in sidebar.tsx */
+
+.clinical-sidebar-nav-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+  padding: 20px 20px 8px;
+}
+
+.clinical-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  margin: 2px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+  position: relative;
+}
+
+.clinical-nav-item:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.clinical-nav-item.active {
+  background: var(--accent-primary-light);
+  color: var(--accent-primary);
+  border-color: rgba(14, 116, 144, 0.10);
+  font-weight: 600;
+}
+
+.clinical-nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+  border-radius: 0 3px 3px 0;
+  background: var(--accent-primary);
+}
+
+.clinical-nav-item.active .nav-icon {
+  color: var(--accent-primary);
+}
+
+.clinical-nav-indicator {
+  margin-left: auto;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+}
+
+/* User card in sidebar */
+.clinical-user-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  margin: 0 10px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-inset);
+  border: 1px solid var(--border-default);
+}
+
+.clinical-user-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0E7490, #0D9488);
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(14, 116, 144, 0.18);
+}
+
+.clinical-signout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: calc(100% - 20px);
+  margin: 0 10px;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent-danger);
+  background: var(--accent-danger-light);
+  border: 1px solid rgba(220, 38, 38, 0.08);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.clinical-signout-btn:hover {
+  background: rgba(220, 38, 38, 0.08);
+  border-color: rgba(220, 38, 38, 0.16);
+}
+
+.clinical-signout-btn:active {
+  transform: scale(0.98);
+}
+
+.clinical-signout-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ══════════════════════════════════════
+   HEADER
+   ══════════════════════════════════════ */
+
+/* Scoped to .clinical-dashboard to prevent leaking into report pages
+   during client-side navigation. The report page's header uses Tailwind
+   `fixed` positioning which was being overridden by `position: relative`
+   here when dashboard.css stayed in memory after a SPA route change. */
+.clinical-dashboard .clinical-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 32px;
+  background: var(--bg-header);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-default);
+  position: relative;
+  z-index: 5;
+}
+
+/* ══════════════════════════════════════
+   CARDS — Elevated layer
+   ══════════════════════════════════════ */
+
+.clinical-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.clinical-card:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* Inner sub-cards within a card — inset layer */
+.clinical-card-inner {
+  background: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+}
+
+/* ══════════════════════════════════════
+   HERO SECTION — Premium top anchor
+   ══════════════════════════════════════ */
+
+.clinical-hero {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  box-shadow: 
+    0 4px 16px rgba(15, 23, 42, 0.06),
+    0 2px 6px rgba(15, 23, 42, 0.03),
+    0 0 0 1px rgba(14, 116, 144, 0.02);
+  padding: 44px 48px 44px 48px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Layer 1: Diagonal gradient — soft */
+.clinical-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(
+      135deg,
+      rgba(16, 185, 129, 0.04) 0%,
+      rgba(4, 120, 87, 0.02) 30%,
+      rgba(37, 99, 235, 0.01) 55%,
+      transparent 80%
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Layer 2: Faint EEG waveform pattern — barely visible */
+.clinical-hero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='200' viewBox='0 0 600 200'%3E%3Cpath d='M0 100 Q30 100 45 70 Q60 40 75 100 Q90 160 105 100 Q120 40 135 100 Q150 140 165 100 Q180 60 195 100 Q210 130 225 100 Q240 70 255 100 Q270 150 285 100 Q300 50 315 100 Q330 130 345 100 Q360 80 375 100 Q390 140 405 100 Q420 60 435 100 Q450 120 465 100 Q480 80 495 100 Q510 140 525 100 Q540 60 555 100 Q570 130 585 100 L600 100' stroke='rgba(14,116,144,0.4)' stroke-width='1.5' fill='none'/%3E%3Cpath d='M0 130 Q40 130 60 110 Q80 90 100 130 Q120 170 140 130 Q160 90 180 130 Q200 150 220 130 Q240 100 260 130 Q280 160 300 130 Q320 100 340 130 Q360 150 380 130 Q400 110 420 130 Q440 150 460 130 Q480 100 500 130 Q520 160 540 130 Q560 110 580 130 L600 130' stroke='rgba(13,148,136,0.25)' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: right center;
+  background-size: 600px 200px;
+  mask-image: radial-gradient(ellipse at 80% 50%, black 10%, transparent 65%);
+  -webkit-mask-image: radial-gradient(ellipse at 80% 50%, black 10%, transparent 65%);
+}
+
+/* ── Hero text block with left accent bar ── */
+.clinical-hero-text-block {
+  position: relative;
+  padding-left: 20px;
+}
+
+.clinical-hero-text-block::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary));
+  opacity: 0.5;
+}
+
+.clinical-hero-tagline {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.clinical-hero-tagline::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 2px;
+  background: var(--accent-primary);
+  border-radius: 1px;
+  opacity: 0.5;
+}
+
+.clinical-hero-title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.32;
+  color: var(--text-heading);
+  letter-spacing: -0.025em;
+  margin-top: 16px;
+  max-width: 560px;
+}
+
+.clinical-hero-title span {
+  color: var(--accent-primary);
+}
+
+.clinical-hero-desc {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  max-width: 460px;
+  margin-top: 20px;
+}
+
+/* Status pill in hero — glass-like elevated cards */
+.clinical-status-pill {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.clinical-status-pill:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.clinical-status-pill.active {
+  border-color: rgba(14, 116, 144, 0.18);
+  background: linear-gradient(135deg, rgba(14, 116, 144, 0.04), rgba(13, 148, 136, 0.025));
+  box-shadow: 0 2px 10px rgba(14, 116, 144, 0.08);
+}
+
+/* ══════════════════════════════════════
+   UPLOAD ZONE — Polished drop area
+   ══════════════════════════════════════ */
+
+.clinical-upload-zone {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 2px dashed var(--border-strong);
+  background: var(--bg-inset);
+  padding: 36px 32px;
+  min-height: 280px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.clinical-upload-zone:hover {
+  border-color: var(--accent-primary);
+  background: linear-gradient(180deg, rgba(14, 116, 144, 0.025), var(--bg-inset));
+  box-shadow: 0 0 0 3px rgba(14, 116, 144, 0.04);
+}
+
+.clinical-upload-zone.dragging {
+  border-color: var(--accent-primary);
+  background: linear-gradient(180deg, rgba(14, 116, 144, 0.04), rgba(14, 116, 144, 0.01));
+  box-shadow: 0 0 0 4px rgba(14, 116, 144, 0.06);
+  border-style: solid;
+}
+
+.clinical-upload-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 68px;
+  height: 68px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, rgba(14, 116, 144, 0.06), rgba(13, 148, 136, 0.04));
+  border: 1px solid rgba(14, 116, 144, 0.1);
+  box-shadow: 0 2px 8px rgba(14, 116, 144, 0.05);
+}
+
+/* ══════════════════════════════════════
+   BUTTONS — Clean, layered
+   ══════════════════════════════════════ */
+
+.clinical-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: linear-gradient(180deg, #0F7D98, #0C6B82);
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 3px rgba(14, 116, 144, 0.25), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.clinical-btn-primary:hover {
+  background: linear-gradient(180deg, #0C6B82, #0A5A6E);
+  box-shadow: 0 3px 10px rgba(14, 116, 144, 0.3), 0 1px 3px rgba(0, 0, 0, 0.06);
+  transform: translateY(-0.5px);
+}
+
+.clinical-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(14, 116, 144, 0.2);
+}
+
+.clinical-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: var(--shadow-xs);
+}
+
+.clinical-btn-secondary:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-sm);
+}
+
+.clinical-btn-secondary:active {
+  transform: scale(0.98);
+}
+
+.clinical-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-primary);
+  background: transparent;
+  border: 1px solid rgba(14, 116, 144, 0.2);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.clinical-btn-outline:hover {
+  background: var(--accent-primary-light);
+  border-color: rgba(14, 116, 144, 0.35);
+}
+
+.clinical-btn-danger-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent-danger);
+  background: transparent;
+  border: 1px solid rgba(220, 38, 38, 0.15);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.clinical-btn-danger-outline:hover {
+  background: var(--accent-danger-light);
+  border-color: rgba(220, 38, 38, 0.28);
+}
+
+/* ══════════════════════════════════════
+   STATUS BADGES
+   ══════════════════════════════════════ */
+
+.clinical-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.clinical-badge-success {
+  background: var(--accent-success-light);
+  color: var(--accent-success);
+  border: 1px solid rgba(22, 163, 74, 0.12);
+}
+
+.clinical-badge-danger {
+  background: var(--accent-danger-light);
+  color: var(--accent-danger);
+  border: 1px solid rgba(220, 38, 38, 0.12);
+}
+
+.clinical-badge-processing {
+  background: var(--accent-primary-light);
+  color: var(--accent-primary);
+  border: 1px solid rgba(14, 116, 144, 0.12);
+}
+
+.clinical-badge-neutral {
+  background: rgba(148, 163, 184, 0.06);
+  color: var(--text-muted);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+/* ══════════════════════════════════════
+   PROGRESS BARS
+   ══════════════════════════════════════ */
+
+.clinical-progress-track {
+  height: 4px;
+  width: 100%;
+  border-radius: 4px;
+  background: var(--bg-tertiary);
+  overflow: hidden;
+}
+
+.clinical-progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  transition: width 0.3s ease;
+}
+
+.clinical-progress-indeterminate {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  animation: progressIndeterminate 1.8s ease-in-out infinite;
+  width: 40%;
+}
+
+/* ══════════════════════════════════════
+   SECTION LABELS & TEXT HIERARCHY
+   ══════════════════════════════════════ */
+
+.clinical-section-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.clinical-section-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  line-height: 1.55;
+}
+
+/* ══════════════════════════════════════
+   METRIC BOXES — Values stand out
+   ══════════════════════════════════════ */
+
+.clinical-metric-box {
+  background: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  transition: all 0.15s ease;
+}
+
+.clinical-metric-box:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-default);
+}
+
+.clinical-metric-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+}
+
+.clinical-metric-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin-top: 8px;
+  letter-spacing: -0.01em;
+}
+
+/* ══════════════════════════════════════
+   EVENT CARDS
+   ══════════════════════════════════════ */
+
+.clinical-event-card {
+  background: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  transition: all 0.15s ease;
+}
+
+.clinical-event-card:hover {
+  border-color: var(--border-default);
+  box-shadow: var(--shadow-xs);
+}
+
+.clinical-event-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-heading);
+}
+
+.clinical-event-risk {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-primary);
+  background: var(--accent-primary-light);
+  padding: 3px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(14, 116, 144, 0.08);
+}
+
+.clinical-event-meta {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ══════════════════════════════════════
+   SPINNERS
+   ══════════════════════════════════════ */
+
+.clinical-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-default);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.clinical-spinner-sm {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--border-default);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ══════════════════════════════════════
+   SCROLLBARS — Clean, unobtrusive
+   ══════════════════════════════════════ */
+
+.clinical-dashboard ::-webkit-scrollbar {
+  width: 4px;
+}
+.clinical-dashboard ::-webkit-scrollbar-track {
+  background: transparent;
+}
+.clinical-dashboard ::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 240, 255, 0.2) 0%,
+    rgba(120, 80, 255, 0.15) 100%
+  );
+  border-radius: 99px;
+  transition: background 0.2s ease;
+}
+.clinical-dashboard ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 240, 255, 0.4) 0%,
+    rgba(120, 80, 255, 0.35) 100%
+  );
+}
+
+/* ══════════════════════════════════════
+   ANIMATIONS — Subtle entrance
+   ══════════════════════════════════════ */
+
+.clinical-fade-in {
+  animation: clinicalFadeIn 0.4s ease forwards;
+}
+
+@keyframes clinicalFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══════════════════════════════════════
+   FILE TAG
+   ══════════════════════════════════════ */
+
+.clinical-file-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-primary);
+  background: var(--accent-primary-light);
+  border: 1px solid rgba(14, 116, 144, 0.08);
+}
+
+/* ══════════════════════════════════════
+   DOT INDICATORS
+   ══════════════════════════════════════ */
+
+.clinical-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.clinical-dot-success { background: var(--accent-success); }
+.clinical-dot-danger  { background: var(--accent-danger); }
+.clinical-dot-primary { background: var(--accent-primary); }
+.clinical-dot-warning { background: var(--accent-warning); }
+
+.clinical-dot-pulse {
+  animation: clinicalPulse 2s ease-in-out infinite;
+}
+
+@keyframes clinicalPulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
+
+/* ══════════════════════════════════════
+   LINK — Button-like links
+   ══════════════════════════════════════ */
+
+.clinical-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-primary);
+  border: 1px solid rgba(14, 116, 144, 0.16);
+  text-decoration: none;
+  transition: all 0.15s ease;
+  background: transparent;
+}
+
+.clinical-link:hover {
+  background: var(--accent-primary-light);
+  border-color: rgba(14, 116, 144, 0.3);
+  box-shadow: 0 2px 6px rgba(14, 116, 144, 0.06);
+}
+
+/* ══════════════════════════════════════
+   DIVIDERS & SEPARATORS
+   ══════════════════════════════════════ */
+
+.clinical-divider {
+  height: 1px;
+  background: var(--border-default);
+  margin: 16px 0;
+}
+
+/* ══════════════════════════════════════
+   CONTEXT PANEL — Right side cards
+   ══════════════════════════════════════ */
+
+.clinical-context-block {
+  background: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+}
+
+.clinical-context-block + .clinical-context-block {
+  margin-top: 12px;
+}
+
+/* Region score row */
+.clinical-region-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 14px;
+}
+
+.clinical-region-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.clinical-region-name {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.clinical-region-score {
+  color: var(--accent-primary);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ══════════════════════════════════════
+   PAGE CONTENT AREA — Layered background
+   ══════════════════════════════════════ */
+
+.clinical-page-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-width: 0;
+  padding: 32px;
+  position: relative;
+  z-index: 1;
+  /* Very subtle top-to-bottom gradient on the entire content area */
+  background: linear-gradient(180deg, 
+    rgba(14, 116, 144, 0.015) 0%, 
+    transparent 180px
+  );
+}
+
+/* Max-width container for content */
+.clinical-page-container {
+  width: 100%;
+  min-width: 0;
+  max-width: 1380px;
+  margin: 0 auto;
+}
+
+/* ── Skeleton Loaders ── */
+@keyframes skeleton-shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--bg-secondary) 0px,
+    var(--bg-tertiary) 200px,
+    var(--bg-secondary) 400px
+  );
+  background-size: 1200px 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+}
+
+.skeleton-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  position: relative;
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE — Mobile ≤ 768px
+   ══════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  /* Sidebar: hidden by default on mobile, shown via JS toggle */
+  .clinical-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 260px;
+    box-shadow: none;
+  }
+
+  .clinical-sidebar.mobile-open {
+    transform: translateX(0);
+    box-shadow: 8px 0 30px rgba(0, 0, 0, 0.12);
+  }
+
+  .mobile-sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 199;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.28s ease;
+  }
+
+  .mobile-sidebar-backdrop.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Mobile header bar — premium, spacious */
+  .mobile-header-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 18px;
+    min-height: 72px;
+    background: rgba(251, 252, 253, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-default);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05), 0 0 0 0.5px rgba(0,0,0,0.04);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .mobile-hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: 1px solid var(--border-default);
+    background: var(--bg-card);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.15s ease;
+    color: var(--text-secondary);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  }
+
+  .mobile-hamburger:hover {
+    background: var(--bg-hover);
+    border-color: var(--border-strong);
+  }
+
+  .mobile-hamburger:active {
+    transform: scale(0.95);
+  }
+
+  /* Hide desktop header on mobile */
+  .clinical-dashboard .clinical-header {
+    display: none;
+  }
+
+  /* Page content: tighter padding with scroll bounce */
+  .clinical-page-content {
+    padding: 16px;
+    overscroll-behavior-y: contain;
+  }
+
+  /* Tighter section gaps — deliberate spacing rhythm */
+  .clinical-page-container {
+    max-width: 100%;
+  }
+
+  /* Reduce space-y-8 (32px) between sections to 20px on mobile */
+  .clinical-page-container > * + * {
+    margin-top: 20px;
+  }
+
+  /* Hero: slightly tighter vertical density, strong headline preserved */
+  .clinical-hero {
+    padding: 22px 20px;
+    border-radius: var(--radius-lg);
+  }
+
+  .clinical-hero-text-block {
+    padding-left: 16px;
+  }
+
+  .clinical-hero-title {
+    font-size: 22px;
+    line-height: 1.35;
+    margin-top: 12px;
+    max-width: 100%;
+  }
+
+  .clinical-hero-desc {
+    font-size: 13.5px;
+    line-height: 1.65;
+    margin-top: 14px;
+    max-width: 100%;
+  }
+
+  .clinical-hero-tagline {
+    font-size: 10px;
+  }
+
+  /* Status pills: full-width on mobile */
+  .clinical-status-pill {
+    padding: 14px 16px;
+  }
+
+  /* Cards: tighter padding on mobile */
+  .clinical-card {
+    border-radius: var(--radius-md);
+  }
+
+  /* Upload zone: compact */
+  .clinical-upload-zone {
+    padding: 24px 16px;
+    min-height: 200px;
+    border-radius: var(--radius-md);
+  }
+
+  .clinical-upload-icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  /* Metric boxes: snugger */
+  .clinical-metric-box {
+    padding: 14px 16px;
+  }
+
+  .clinical-metric-value {
+    font-size: 16px;
+  }
+
+  /* Event cards: slightly more compact vertically */
+  .clinical-event-card {
+    padding: 12px 14px;
+  }
+
+  .clinical-event-title {
+    font-size: 13px;
+  }
+
+  .clinical-event-risk {
+    font-size: 10px;
+    padding: 2px 8px;
+  }
+
+  /* Event meta: compact */
+  .clinical-event-meta {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  /* Context blocks: compact */
+  .clinical-context-block {
+    padding: 16px;
+  }
+
+  /* Recommendations: keep generous line-height — longer text */
+  .clinical-context-block .space-y-3 > div {
+    line-height: 1.7;
+  }
+
+  /* Section labels */
+  .clinical-section-label {
+    font-size: 10px;
+  }
+
+  .clinical-section-desc {
+    font-size: 13px;
+  }
+
+  /* Buttons: ensure touch-friendly sizing */
+  .clinical-btn-primary,
+  .clinical-btn-secondary,
+  .clinical-btn-outline {
+    padding: 12px 20px;
+    font-size: 13px;
+    min-height: 44px;
+  }
+
+  .clinical-link {
+    padding: 10px 16px;
+    font-size: 13px;
+    min-height: 44px;
+  }
+
+  .clinical-signout-btn {
+    min-height: 44px;
+  }
+
+  /* Card inner */
+  .clinical-card-inner {
+    padding: 14px 16px;
+  }
+
+  /* Region rows */
+  .clinical-region-row {
+    font-size: 13px;
+  }
+
+  /* Badge */
+  .clinical-badge {
+    font-size: 11px;
+    padding: 4px 12px;
+  }
+
+  /* Page container */
+  .clinical-page-container {
+    max-width: 100%;
+  }
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE — Tablet 769px–1023px
+   ══════════════════════════════════════ */
+
+@media (min-width: 769px) and (max-width: 1023px) {
+  .clinical-hero {
+    padding: 32px 28px;
+  }
+
+  .clinical-hero-title {
+    font-size: 26px;
+  }
+
+  .clinical-page-content {
+    padding: 24px;
+  }
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE — Desktop hide mobile elements
+   ══════════════════════════════════════ */
+
+@media (min-width: 769px) {
+  .mobile-header-bar {
+    display: none;
+  }
+
+  .mobile-sidebar-backdrop {
+    display: none;
+  }
+
+  .mobile-hamburger {
+    display: none;
+  }
+}
+

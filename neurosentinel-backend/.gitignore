@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+pip-wheel-metadata/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment variables - NEVER commit these
+.env
+.env.*
+
+# PyTest
+.pytest_cache/
+.pytest_ini
+pytest.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# ML model files (too large for GitHub)
+*.pt
+*.pth
+*.onnx
+*.pkl
+*.bin
+*.h5
+
+# MNE cache
+~/mne_data/
+
+# Duplicate of root assets/logo.jpeg — do not re-add
+logo.jpeg

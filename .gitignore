@@ -1,0 +1,90 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Environment variables — NEVER commit these
+.env
+.env.*
+.env*.local
+!**/.env.example
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+build/
+*.tsbuildinfo
+next-env.d.ts
+
+# ML model files (too large for GitHub — store in cloud storage)
+*.pt
+*.pth
+*.onnx
+*.pkl
+*.bin
+*.h5
+
+# Python packaging artifacts
+dist/
+*.egg-info/
+*.egg
+pip-wheel-metadata/
+
+# Test caches
+.pytest_cache/
+.pytest_ini
+pytest.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Vercel / Render deploy artifacts
+.vercel/
+
+# SQL migration working files (keep the final ones, ignore temp)
+migration_add_missing_columns.sql
+migration_fix_role_constraint.sql
+migration_fresh_start.sql
+
+# Dev / scratch scripts — never commit these
+add_complete_metrics.py
+add_paper_eval.py
+build_docx.py
+dump_nb.py
+fix_onboarding.py
+patch_notebook.py
+nb_dump.txt
+neurosentinel/scratch_onboard.py
+
+# Generated / superseded docs — keep only docs/ folder versions
+*.html
+NeuroSentinel_AI_April_14_Complete_Guide.pdf
+NeuroSentinel_AI_April21_Complete_GUIDE.pdf
+NeuroSentinel_DeploymentGuide.html
+
+# Old architecture images
+system architecture_old.jpeg
+System_architecture.jpeg
+docs/System_architecture.jpeg
+
+logo.jpeg

@@ -1,0 +1,32 @@
+[project]
+name = "neurosentinel-backend"
+version = "0.1.0"
+description = "FastAPI backend for NeuroSentinel production inference and SCOUT."
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115.0",
+  "httpx>=0.28.0",
+  "mne>=1.8.0",
+  "numpy>=2.0.0",
+  "pydantic-settings>=2.6.0",
+  "python-multipart>=0.0.9",
+  "python-dotenv>=1.0.1",
+  "reportlab>=4.2.0",
+  "scipy>=1.14.0",
+  "supabase>=2.10.0",
+  "torch>=2.5.0",
+  "uvicorn[standard]>=0.32.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3.0",
+]
+
+[build-system]
+requires = ["setuptools>=68.0.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

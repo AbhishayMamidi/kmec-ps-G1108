@@ -1,0 +1,14 @@
+name: Keep Hugging Face Backend Awake
+
+on:
+  schedule:
+    # Runs automatically once every 24 hours (spaces sleep after 48h)
+    - cron: '0 */24 * * *'
+  workflow_dispatch: # Allows you to manually trigger it from the GitHub Actions tab
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Hugging Face Space
+        run: curl -sf https://huggingface.co/spaces/manikondaadwith/neurosentinel-backend > /dev/null || echo "Ping completed"

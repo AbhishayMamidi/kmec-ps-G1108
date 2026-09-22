@@ -1,0 +1,232 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ───────────────────────────────────────────────
+   NeuroSentinel — Design System Variables
+─────────────────────────────────────────────── */
+:root {
+  /* Backgrounds */
+  --bg-primary:   #0A0A0F;
+  --bg-secondary: #12121A;
+  --bg-tertiary:  #1A1A26;
+  --bg-card:      #16161F;
+
+  /* Accent colours */
+  --accent-primary:   #00F0FF;
+  --accent-secondary: #FFB800;
+  --accent-danger:    #FF3366;
+  --accent-success:   #00FF9D;
+  --accent-warning:   #FFB800;
+
+  /* Text */
+  --text-primary:   #E8E8F0;
+  --text-secondary: #8888A0;
+  --text-muted:     #8888A0;
+
+  /* Borders */
+  --border-subtle:  rgba(0, 240, 255, 0.08);
+  --border-default: rgba(0, 240, 255, 0.18);
+  --border-strong:  rgba(0, 240, 255, 0.45);
+
+  /* Glow */
+  --glow-primary: 0 0 20px rgba(0, 240, 255, 0.35), 0 0 60px rgba(0, 240, 255, 0.12);
+  --glow-danger:  0 0 20px rgba(255, 51, 102, 0.35), 0 0 60px rgba(255, 51, 102, 0.12);
+  --glow-sm:      0 0 10px rgba(0, 240, 255, 0.25);
+}
+
+/* ───────────────────────────────────────────────
+   Base Reset
+─────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Outfit', system-ui, sans-serif;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+/* ───────────────────────────────────────────────
+   Utility Layers
+─────────────────────────────────────────────── */
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .font-display { font-family: 'Outfit', sans-serif; }
+
+  /* Glow effects */
+  .glow-primary { box-shadow: var(--glow-primary); }
+  .glow-danger  { box-shadow: var(--glow-danger); }
+  .glow-sm      { box-shadow: var(--glow-sm); }
+  .text-glow-primary { text-shadow: 0 0 20px rgba(0, 240, 255, 0.6); }
+  .text-glow-danger  { text-shadow: 0 0 20px rgba(255, 51, 102, 0.6); }
+
+  /* Glassmorphism card */
+  .glass-card {
+    background: rgba(22, 22, 31, 0.75);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--border-default);
+    border-radius: 20px;
+  }
+
+  /* Animated gradient border */
+  .border-glow-animated {
+    position: relative;
+  }
+  .border-glow-animated::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-danger), var(--accent-primary));
+    background-size: 300% 300%;
+    animation: borderRotate 4s linear infinite;
+    z-index: -1;
+    opacity: 0.6;
+  }
+
+  /* Scan-line overlay */
+  .scanline::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 240, 255, 0.015) 2px,
+      rgba(0, 240, 255, 0.015) 4px
+    );
+    pointer-events: none;
+    border-radius: inherit;
+  }
+}
+
+/* ───────────────────────────────────────────────
+   Keyframe Animations
+─────────────────────────────────────────────── */
+@keyframes borderRotate {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.05); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(100px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes ping-slow {
+  0%   { transform: scale(1);    opacity: 0.8; }
+  100% { transform: scale(2.2);  opacity: 0; }
+}
+
+@keyframes scout-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.5); }
+  50%      { box-shadow: 0 0 0 10px rgba(0, 240, 255, 0); }
+}
+
+.scout-idle {
+  animation: scout-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes progressIndeterminate {
+  0%   { transform: translateX(-100%); }
+  50%  { transform: translateX(100%); }
+  100% { transform: translateX(200%); }
+}
+
+.scrollbar-thin::-webkit-scrollbar { width: 3px; }
+.scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+.scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.15); border-radius: 99px; }
+.scrollbar-thin::-webkit-scrollbar-thumb:hover { background: rgba(0, 240, 255, 0.3); }
+
+/* ───────────────────────────────────────────────
+   Scrollbar — subtle dark theme
+─────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 240, 255, 0.25) 0%,
+    rgba(120, 80, 255, 0.2) 100%
+  );
+  border-radius: 99px;
+  transition: background 0.2s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 240, 255, 0.45) 0%,
+    rgba(120, 80, 255, 0.4) 100%
+  );
+}
+::-webkit-scrollbar-corner { background: var(--bg-primary); }
+
+/* ───────────────────────────────────────────────
+   Input focus resets
+─────────────────────────────────────────────── */
+input:focus { outline: none; }
+/* Dark theme autofill (global fallback) */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--text-primary);
+  -webkit-box-shadow: 0 0 0px 1000px var(--bg-tertiary) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Light card autofill override — auth pages */
+.auth-input:-webkit-autofill,
+.auth-input:-webkit-autofill:hover,
+.auth-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #1E293B;
+  -webkit-box-shadow: 0 0 0px 1000px #FFFFFF inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
